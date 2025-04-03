@@ -19,8 +19,8 @@
 
 ### 💡 核心特性
 
-- **多点平衡算法**：基于所有参与者位置，智能计算最公平的会面点
-- **全方位咖啡馆评估**：综合考量评分、距离、环境、服务等多维因素
+- **多点平衡算法**：基于所有参与者位置，智能计算最公平、各方最舒服的会面点
+- **全方位咖啡馆评估**：综合考量评分、距离、环境、服务、交通等多维因素
 - **个性化需求满足**：支持停车便利、环境安静、商务会谈等特殊偏好
 - **高颜值交互界面**：精心设计的Web界面，支持响应式布局
 - **直观地图可视化**：整合高德地图API，直观展示地理位置和路线规划
@@ -29,12 +29,8 @@
 ## 🔍 项目展示
 
 <p align="center">
-  <img src="docs/images/preview.png" alt="咖啡会预览图" width="80%">
-</p>
-
-<p align="center">
   <a href="docs/videos/coffee_meet_demo.mp4">
-    <strong>📹 点击查看演示视频</strong>
+    <strong>📹 点击查看项目演示视频</strong>
   </a>
 </p>
 
@@ -42,12 +38,14 @@
   <em>项目演示 - 多地点咖啡馆智能推荐过程</em>
 </p>
 
+> 注意：GitHub不支持直接播放视频，请下载后在本地观看，或克隆仓库后查看。
+
 ## 🚀 快速开始
 
 ### 系统要求
 
 - Python 3.8+
-- 网络连接（用于地图API调用）
+- 网络连接
 - 现代浏览器（Chrome, Firefox, Safari等）
 
 ### 安装指南
@@ -71,6 +69,7 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
+把各个必要的api_key和安全密钥都填入
 
 4. 启动Web服务器：
 
@@ -106,7 +105,7 @@ http://localhost:8000
 ### 核心算法流程
 
 1. **地理编码转换**：将用户输入的地点描述转换为精确经纬度坐标
-2. **中心点计算**：基于所有参与者位置智能计算最佳会面中心点
+2. **中心点计算**：基于所有参与者位置智能计算最佳会面地点
 3. **POI搜索**：通过高德地图在中心点附近搜索咖啡馆
 4. **多维度排序**：根据评分、距离、用户需求等因素对咖啡馆进行智能排序
 5. **可视化呈现**：生成交互式HTML页面，展示详细结果和动态地图
@@ -118,11 +117,6 @@ http://localhost:8000
 - **地图服务**：高德地图
 - **数据处理**：Pydantic, aiohttp
 
-## 🔄 工作流程
-
-<p align="center">
-  <img src="docs/images/workflow.png" alt="工作流程" width="80%">
-</p>
 
 ## 💻 开发者指南
 
@@ -200,7 +194,7 @@ def _rank_cafes(self, cafes, center_point, user_requirements):
 
 ## 👏 致谢
 
-- [OpenManus](https://github.com/OpenManus/OpenManus) - 提供基础智能代理框架
+- [OpenManus] - 提供基础智能代理框架
 - [高德地图](https://lbs.amap.com/) - 提供地图和POI数据服务
 - 所有贡献者和使用者 - 感谢您的支持和反馈
 
