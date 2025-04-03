@@ -29,8 +29,14 @@
 ## 🔍 Project Showcase
 
 <p align="center">
-  <img src="docs/images/search_page.png" alt="Search Page" width="45%">
-  <img src="docs/images/result_page.png" alt="Result Page" width="45%">
+  <video width="80%" controls>
+    <source src="docs/videos/coffee_meet_demo.mp4" type="video/mp4">
+    Your browser does not support the video tag, please upgrade your browser or use another one
+  </video>
+</p>
+
+<p align="center">
+  <em>Project demonstration video - Smart cafe recommendation process for multiple locations</em>
 </p>
 
 ## 🚀 Quick Start

@@ -45,7 +45,7 @@ class CafeRecommender(BaseTool):
     }
 
     # 高德地图API密钥
-    api_key: str = "890047cfc3d50b238af0e319c4f09ce5"
+    api_key: str = ""
 
     # 缓存请求结果以减少API调用
     geocode_cache: Dict[str, Dict] = Field(default_factory=dict)
@@ -1281,7 +1281,7 @@ class CafeRecommender(BaseTool):
 
         // 配置高德地图安全密钥
         window._AMapSecurityConfig = {{
-            securityJsCode: "21786af9a3009edb6536bfa9e51c4af4",
+            securityJsCode: "",
         }};
 
         // 等待页面加载完成再加载地图

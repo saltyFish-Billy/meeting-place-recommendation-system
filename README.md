@@ -29,8 +29,14 @@
 ## 🔍 项目展示
 
 <p align="center">
-  <img src="docs/images/search_page.png" alt="搜索页面" width="45%">
-  <img src="docs/images/result_page.png" alt="结果页面" width="45%">
+  <video width="80%" controls>
+    <source src="docs/videos/coffee_meet_demo.mp4" type="video/mp4">
+    您的浏览器不支持视频标签，请升级浏览器或使用其他浏览器查看
+  </video>
+</p>
+
+<p align="center">
+  <em>项目演示视频 - 多地点咖啡馆智能推荐过程</em>
 </p>
 
 ## 🚀 快速开始
