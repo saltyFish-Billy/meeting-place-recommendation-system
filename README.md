@@ -29,14 +29,17 @@
 ## 🔍 项目展示
 
 <p align="center">
-  <video width="80%" controls>
-    <source src="docs/videos/coffee_meet_demo.mp4" type="video/mp4">
-    您的浏览器不支持视频标签，请升级浏览器或使用其他浏览器查看
-  </video>
+  <img src="docs/images/preview.png" alt="咖啡会预览图" width="80%">
 </p>
 
 <p align="center">
-  <em>项目演示视频 - 多地点咖啡馆智能推荐过程</em>
+  <a href="docs/videos/coffee_meet_demo.mp4">
+    <strong>📹 点击查看演示视频</strong>
+  </a>
+</p>
+
+<p align="center">
+  <em>项目演示 - 多地点咖啡馆智能推荐过程</em>
 </p>
 
 ## 🚀 快速开始
