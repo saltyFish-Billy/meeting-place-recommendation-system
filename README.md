@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/images/logo.png" alt="咖啡会" width="400">
+  <img src="docs/images/logo.png" alt="咖啡会" width="600">
 </p>
 
 > "让每次会面都成为完美时刻，让每杯咖啡都值得回味" —— 咖啡会
@@ -39,6 +39,18 @@
 </p>
 
 > 注意：GitHub不支持直接播放视频，请下载后在本地观看，或克隆仓库后查看。
+
+
+
+<p align="center">
+  <img src="docs/images/show1.jpg" alt="咖啡会1" width="600">
+</p>
+
+
+<p align="center">
+  <img src="docs/images/show.jpg" alt="咖啡会2" width="600">
+</p>
+
 
 ## 🚀 快速开始
 
