@@ -40,7 +40,8 @@
 
 > 注意：GitHub不支持直接播放视频，请下载后在本地观看，或克隆仓库后查看。
 
-
+输入地址之后，会综合各方面需求、各个与会者距离，和用户的额外条件（比如交通便利、距离地铁站近、适合学生党等）进行综合筛选，找到最合适的位置。推荐附近适合会面的咖啡店等，并直观的展示在地图上。
+带有详细的咖啡店营业时间、联系电话和饮品介绍，一键点击即可跳转高德地图导航前往目的地，获得交通推荐路线。
 
 <p align="center">
   <img src="docs/images/show1.jpg" alt="咖啡会1" width="600">
@@ -50,6 +51,11 @@
 <p align="center">
   <img src="docs/images/show.jpg" alt="咖啡会2" width="600">
 </p>
+
+<p align="center">
+  <img src="docs/images/show2.jpg" alt="咖啡会3" width="600">
+</p>
+
 
 
 ## 🚀 快速开始
