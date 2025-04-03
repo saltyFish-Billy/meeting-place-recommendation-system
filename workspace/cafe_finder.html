@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>咖啡会 - 智能咖啡馆会面点推荐</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css">
+    <style>
+        /* 添加一些关键帧动画，确保所有动画都在CSS中定义 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes typingAnimation {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+        }
+
+        :root {
+            --primary: #9c6644;
+            --primary-light: #c68b59;
+            --primary-dark: #7f5539;
+            --secondary: #c9ada7;
+            --light: #f2e9e4;
+            --dark: #22223b;
+            --success: #4a934a;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo h1 {
+            font-size: 3rem;
+            margin: 0;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .logo p {
+            font-size: 1.1rem;
+            margin-top: 5px;
+            color: var(--primary-light);
+        }
+
+        .coffee-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .search-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title i {
+            margin-right: 10px;
+            font-size: 1.6rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--primary-light);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(156, 102, 68, 0.2);
+        }
+
+        .location-inputs {
+            margin-bottom: 12px;
+            position: relative;
+            display: flex;
+        }
+
+        .location-inputs input {
+            padding-left: 35px;
+        }
+
+        .location-inputs i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .location-remove {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            padding: 0 5px;
+            transition: var(--transition);
+        }
+
+        .location-remove:hover {
+            color: #e74c3c;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+        }
+
+        #addLocation {
+            background-color: var(--light);
+            color: var(--primary);
+            border: 2px dashed var(--primary-light);
+            margin-bottom: 25px;
+        }
+
+        #addLocation:hover {
+            background-color: var(--primary-light);
+            color: white;
+            border-style: solid;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .loading .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(156, 102, 68, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .feature-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .feature-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        .feature-text {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .tip-card {
+            background-color: #fff3e0;
+            border-left: 4px solid var(--primary);
+            padding: 15px 20px;
+            margin-top: 30px;
+            border-radius: 6px;
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+
+        .tip-card p {
+            margin: 0;
+            color: #795548;
+            font-size: 0.95rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #999;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .search-card {
+                padding: 25px;
+            }
+
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* AI助手相关样式 */
+        .ai-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 380px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeIn 0.5s ease 1s forwards;
+        }
+
+        .ai-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .ai-title {
+            display: flex;
+            align-items: center;
+        }
+
+        .ai-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .ai-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4cd137;
+            margin-left: 8px;
+        }
+
+        .ai-actions {
+            display: flex;
+        }
+
+        .ai-action {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: var(--transition);
+            padding: 5px;
+        }
+
+        .ai-action:hover {
+            opacity: 1;
+        }
+
+        .ai-conversation {
+            padding: 15px;
+            height: 250px;
+            overflow-y: auto;
+        }
+
+        .ai-message {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .ai-message.appear {
+            animation: messageAppear 0.5s ease forwards;
+        }
+
+        .ai-bubble {
+            background-color: #f1f0f0;
+            padding: 12px 15px;
+            border-radius: 15px;
+            border-top-left-radius: 5px;
+            display: inline-block;
+            max-width: 85%;
+            word-wrap: break-word;
+        }
+
+        .ai-bubble.ai {
+            background-color: var(--primary-light);
+            color: white;
+            border-radius: 15px;
+            border-top-right-radius: 5px;
+        }
+
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #aaa;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingAnimation 1.5s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .ai-footer {
+            padding: 12px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .ai-footer button {
+            background-color: var(--primary-light);
+            font-size: 0.9rem;
+            padding: 8px 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1><i class='bx bxs-coffee coffee-icon'></i>咖啡会</h1>
+            <p>寻找最适合您的会面咖啡馆</p>
+        </div>
+
+        <div class="search-card">
+            <h2 class="section-title"><i class='bx bx-search'></i>寻找最佳会面点</h2>
+            <form id="cafeForm">
+                <div class="form-group" id="locationContainer">
+                    <label>参与者地点：</label>
+                    <div class="location-inputs">
+                        <i class='bx bx-map'></i>
+                        <input type="text" name="locations[]" placeholder="例如：北京朝阳区望京宝星园" required>
+                    </div>
+                    <div class="location-inputs">
+                        <i class='bx bx-map'></i>
+                        <input type="text" name="locations[]" placeholder="例如：海淀区中关村地铁站" required>
+                    </div>
+                </div>
+                <button type="button" id="addLocation"><i class='bx bx-plus'></i>添加更多地点</button>
+
+                <div class="form-group">
+                    <label>搜索关键词（可选）：</label>
+                    <input type="text" name="keywords" placeholder="默认为'咖啡馆'" value="咖啡馆">
+                </div>
+
+                <div class="form-group">
+                    <label>特殊需求（可选）：</label>
+                    <textarea name="user_requirements" placeholder="例如：停车方便、环境安静、适合商务会谈等" rows="3"></textarea>
+                </div>
+
+                <div class="tip-card">
+                    <p><i class='bx bx-info-circle'></i> 小贴士：输入至少两个地点，我们会自动计算最佳会面点并推荐附近的咖啡馆。</p>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit"><i class='bx bx-coffee'></i>查找最佳会面咖啡馆</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="loading">
+            <span class="spinner"></span>正在寻找最合适的咖啡馆，请稍候...
+        </div>
+
+        <div class="feature-cards">
+            <div class="feature-card">
+                <i class='bx bx-map-alt feature-icon'></i>
+                <h3 class="feature-title">智能位置分析</h3>
+                <p class="feature-text">自动计算最平衡的会面地点，让每个人的出行距离相对均衡</p>
+            </div>
+            <div class="feature-card">
+                <i class='bx bx-coffee-togo feature-icon'></i>
+                <h3 class="feature-title">精选咖啡馆</h3>
+                <p class="feature-text">根据评分、距离、环境等多种因素，推荐最佳咖啡馆</p>
+            </div>
+            <div class="feature-card">
+                <i class='bx bx-map feature-icon'></i>
+                <h3 class="feature-title">交互式地图</h3>
+                <p class="feature-text">直观地在地图上展示所有地点和推荐咖啡馆，方便导航</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI助手对话框 -->
+    <div class="ai-assistant" id="aiAssistant">
+        <div class="ai-header">
+            <div class="ai-title">
+                <div class="ai-avatar">
+                    <i class="bx bx-bot"></i>
+                </div>
+                <div>
+                    <div class="ai-name">咖啡会 AI助手</div>
+                    <div class="ai-status"></div>
+                </div>
+            </div>
+            <div class="ai-actions">
+                <button class="ai-action" id="minimizeAI" onclick="toggleMinimize()"><i
+                        class="bx bx-minus"></i></button>
+                <button class="ai-action" id="closeAI" onclick="closeAssistant()"><i class="bx bx-x"></i></button>
+            </div>
+        </div>
+        <div class="ai-conversation" id="aiConversation">
+            <!-- 初始消息直接添加到HTML中，避免JavaScript可能的加载问题 -->
+            <div class="ai-message">
+                <div class="ai-bubble ai">
+                    您好！我是咖啡会智能助手，有什么可以帮您的吗？
+                </div>
+            </div>
+            <div class="ai-message">
+                <div class="ai-bubble ai">
+                    想找个理想的会面地点？请在表单中输入至少两个位置，我会为您计算最佳会面点。
+                </div>
+            </div>
+        </div>
+        <div class="ai-footer">
+            <button id="suggestButton" onclick="getRandomSuggestion()"><i class='bx bx-bulb'></i>获取建议</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 咖啡会 - 智能咖啡馆会面点推荐系统 | 数据来源：高德地图</p>
+    </footer>
+
+    <script>
+        // 添加和删除地点输入
+        function addLocation() {
+            const container = document.querySelector('.location-inputs').cloneNode(true);
+            container.querySelector('input').value = '';
+
+            // 添加删除按钮（只有当有超过2个地点时才显示删除按钮）
+            const locationInputs = document.querySelectorAll('.location-inputs');
+            if (locationInputs.length >= 2) {
+                // 为每个现有的地点输入添加删除按钮（如果没有的话）
+                locationInputs.forEach(input => {
+                    if (!input.querySelector('.location-remove')) {
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'location-remove';
+                        removeBtn.type = 'button';
+                        removeBtn.innerHTML = '<i class="bx bx-x"></i>';
+                        removeBtn.addEventListener('click', function () {
+                            input.remove();
+                            updateRemoveButtons();
+                        });
+                        input.appendChild(removeBtn);
+                    }
+                });
+
+                // 为新地点添加删除按钮
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'location-remove';
+                removeBtn.type = 'button';
+                removeBtn.innerHTML = '<i class="bx bx-x"></i>';
+                removeBtn.addEventListener('click', function () {
+                    container.remove();
+                    updateRemoveButtons();
+                });
+                container.appendChild(removeBtn);
+            }
+
+            document.getElementById('locationContainer').appendChild(container);
+        }
+
+        function updateRemoveButtons() {
+            const locationInputs = document.querySelectorAll('.location-inputs');
+            const removeBtns = document.querySelectorAll('.location-remove');
+
+            if (locationInputs.length <= 2) {
+                removeBtns.forEach(btn => btn.remove());
+            }
+        }
+
+        // 表单提交
+        document.getElementById('cafeForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const loadingElement = document.querySelector('.loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'block';
+            }
+
+            const formData = new FormData(this);
+            const locations = Array.from(formData.getAll('locations[]')).filter(loc => loc.trim() !== '');
+            const keywords = formData.get('keywords');
+            const user_requirements = formData.get('user_requirements');
+
+            if (locations.length < 2) {
+                alert('请至少输入两个地点');
+                if (loadingElement) {
+                    loadingElement.style.display = 'none';
+                }
+                return;
+            }
+
+            fetch('/api/find_cafe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    locations: locations,
+                    keywords: keywords,
+                    user_requirements: user_requirements
+                }),
+            })
+                .then(response => response.text())
+                .then(data => {
+                    // 清理返回的URL，移除可能的引号
+                    const cleanUrl = data.replace(/["']/g, '');
+                    window.location.href = cleanUrl;
+                })
+                .catch((error) => {
+                    alert('查找失败: ' + error);
+                    if (loadingElement) {
+                        loadingElement.style.display = 'none';
+                    }
+                });
+        });
+
+        // AI助手全局变量和函数
+        const aiResponses = {
+            "如何选择最合适的咖啡馆？": "我会根据多项因素为您推荐最佳咖啡馆：1）距离每个人的平均路程，2）咖啡馆的评分和口碑，3）您的特殊需求（如安静环境、停车便利等）。系统会自动平衡这些因素，为您找到最合适的选择。",
+            "我有5个不同地点的朋友要会面，该怎么做？": "没问题！本系统最多支持5个不同地点。只需点击'添加更多地点'按钮，输入所有朋友的位置信息，然后点击查找按钮。我会计算一个对所有人都公平的会面点，并推荐附近的咖啡馆。",
+            "如何找到地铁站附近的咖啡馆？": "只需在'特殊需求'输入框中填写'地铁站附近'或'交通便利'，系统会优先考虑靠近公共交通的咖啡馆。在结果页面中，您还可以查看详细地图，了解咖啡馆与地铁站的具体位置关系。",
+            "能否找到适合商务洽谈的安静咖啡馆？": "当然可以！请在'特殊需求'输入框中填写'安静环境'和'商务洽谈'。系统会优先推荐环境安静、适合商务交流的咖啡馆，帮助您找到理想的会谈场所。"
+        };
+
+        const userSuggestions = [
+            "如何选择最合适的咖啡馆？",
+            "我有5个不同地点的朋友要会面，该怎么做？",
+            "如何找到地铁站附近的咖啡馆？",
+            "能否找到适合商务洽谈的安静咖啡馆？"
+        ];
+
+        let isMinimized = false;
+
+        // 显示AI消息函数
+        function addAIMessage(message) {
+            const aiConversation = document.getElementById('aiConversation');
+            if (!aiConversation) return;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'ai-message';
+
+            msgDiv.innerHTML = `
+                <div class="ai-bubble ai">
+                    ${message}
+                </div>
+            `;
+
+            aiConversation.appendChild(msgDiv);
+            aiConversation.scrollTop = aiConversation.scrollHeight;
+
+            setTimeout(() => {
+                msgDiv.classList.add('appear');
+            }, 100);
+        }
+
+        // 显示用户消息函数
+        function addUserMessage(message) {
+            const aiConversation = document.getElementById('aiConversation');
+            if (!aiConversation) return;
+
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'ai-message';
+            msgDiv.style.textAlign = 'right';
+
+            msgDiv.innerHTML = `
+                <div class="ai-bubble">
+                    ${message}
+                </div>
+            `;
+
+            aiConversation.appendChild(msgDiv);
+            aiConversation.scrollTop = aiConversation.scrollHeight;
+
+            setTimeout(() => {
+                msgDiv.classList.add('appear');
+            }, 100);
+
+            // 显示AI正在输入
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'ai-message ai-typing';
+            typingDiv.innerHTML = `
+                <div class="ai-bubble ai">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+
+            aiConversation.appendChild(typingDiv);
+            aiConversation.scrollTop = aiConversation.scrollHeight;
+
+            setTimeout(() => {
+                typingDiv.classList.add('appear');
+            }, 100);
+
+            // 1.5秒后移除输入指示器并显示回复
+            setTimeout(() => {
+                typingDiv.remove();
+                const response = aiResponses[message] || "抱歉，我暂时无法回答这个问题。";
+                addAIMessage(response);
+            }, 1500);
+        }
+
+        // 最小化AI助手
+        function toggleMinimize() {
+            const aiConversation = document.getElementById('aiConversation');
+            if (!aiConversation) return;
+
+            if (isMinimized) {
+                aiConversation.style.height = '250px';
+            } else {
+                aiConversation.style.height = '0';
+            }
+            isMinimized = !isMinimized;
+        }
+
+        // 关闭AI助手
+        function closeAssistant() {
+            const aiAssistant = document.getElementById('aiAssistant');
+            if (aiAssistant) {
+                aiAssistant.style.display = 'none';
+            }
+        }
+
+        // 获取随机建议
+        function getRandomSuggestion() {
+            const randomIndex = Math.floor(Math.random() * userSuggestions.length);
+            const randomSuggestion = userSuggestions[randomIndex];
+            addUserMessage(randomSuggestion);
+        }
+
+        // 页面加载完成后添加事件监听器
+        window.addEventListener('load', function () {
+            // 添加更多地点按钮
+            document.getElementById('addLocation').addEventListener('click', addLocation);
+
+            // 给所有初始AI消息添加appear类
+            setTimeout(function () {
+                const messages = document.querySelectorAll('.ai-message');
+                messages.forEach((msg, index) => {
+                    setTimeout(function () {
+                        msg.classList.add('appear');
+                    }, index * 300);
+                });
+            }, 500);
+
+            // 确保AI助手可见
+            const aiAssistant = document.getElementById('aiAssistant');
+            if (aiAssistant) {
+                setTimeout(() => {
+                    aiAssistant.style.opacity = '1';
+                    aiAssistant.style.transform = 'translateY(0)';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

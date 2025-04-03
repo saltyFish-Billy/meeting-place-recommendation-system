@@ -1,0 +1,2 @@
+[console_scripts]
+openmanus = main:main
