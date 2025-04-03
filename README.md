@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/OpenManus/branding/main/logo.png" alt="咖啡会" width="200">
+  <img src="docs/images/logo.png" alt="咖啡会" width="400">
 </p>
 
 > "让每次会面都成为完美时刻，让每杯咖啡都值得回味" —— 咖啡会
