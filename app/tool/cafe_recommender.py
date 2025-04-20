@@ -45,7 +45,7 @@ class CafeRecommender(BaseTool):
     }
 
     # 高德地图API密钥
-    api_key: str = ""
+    api_key: str = "09335be822a1469e34ce42877c0301d7"
 
     # 缓存请求结果以减少API调用
     geocode_cache: Dict[str, Dict] = Field(default_factory=dict)
