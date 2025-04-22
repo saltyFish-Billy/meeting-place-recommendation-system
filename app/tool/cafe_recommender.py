@@ -14,6 +14,8 @@ from app.logger import logger
 from app.tool.base import BaseTool, ToolResult
 
 
+
+
 class CafeRecommender(BaseTool):
     """咖啡馆推荐工具，基于多个地点计算最佳会面位置并推荐咖啡馆"""
 
