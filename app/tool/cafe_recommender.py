@@ -3,9 +3,11 @@ import json
 import math
 import os
 import uuid
+import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
+import requests
 import aiofiles
 import aiohttp
 from pydantic import Field
@@ -13,8 +15,8 @@ from pydantic import Field
 from app.logger import logger
 from app.tool.base import BaseTool, ToolResult
 
-
-
+from langchain_deepseek import ChatDeepSeek
+from openai import OpenAI
 
 class CafeRecommender(BaseTool):
     """咖啡馆推荐工具，基于多个地点计算最佳会面位置并推荐咖啡馆"""
@@ -179,16 +181,16 @@ class CafeRecommender(BaseTool):
         if cache_key in self.poi_cache:
             return self.poi_cache[cache_key]
 
-        url = "https://restapi.amap.com/v3/place/around"
+        url = "https://restapi.amap.com/v5/place/around"
         params = {
             "key": self.api_key,
-            "location": location,
             "keywords": keywords,
             "types": types,
+            "location": location,
             "radius": radius,
-            "offset": offset,
-            "page": 1,
-            "extensions": "all"
+            "show_fields": "business",
+            "page_size": offset,
+            "page_num": 1,
         }
 
         async with aiohttp.ClientSession() as session:
@@ -207,63 +209,119 @@ class CafeRecommender(BaseTool):
                 self.poi_cache[cache_key] = pois
                 return pois
 
-    def _rank_cafes(
-        self,
-        cafes: List[Dict],
-        center_point: Tuple[float, float],
-        user_requirements: str
-    ) -> List[Dict]:
-        """根据多种因素对咖啡馆进行排序"""
-        # 提取用户需求关键词
-        requirement_keywords = {
-            "停车": ["停车", "车位", "停车场"],
-            "安静": ["安静", "环境好", "氛围"],
-            "商务": ["商务", "会议", "办公"],
-            "交通": ["交通", "地铁", "公交"]
+    async def _get_weather(
+            self,
+            city_code: str,
+    ) -> str:
+        url = "https://restapi.amap.com/v3/weather/weatherInfo"
+        params = {
+            "key": self.api_key,
+            "city": city_code,
+            "extensions": "all",
+            "output": "JSON"
         }
 
-        user_priorities = []
-        for key, keywords in requirement_keywords.items():
-            if any(kw in user_requirements for kw in keywords):
-                user_priorities.append(key)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as response:
+                if response.status != 200:
+                    logger.error(f"高德地图天气搜索失败: {response.status}")
+                    return "获取天气信息失败"
 
-        # 为每个咖啡馆计算综合分数
-        for cafe in cafes:
-            score = 0
+                data = await response.json()
 
-            # 基础分 - 评分 (0-5分)
-            rating = float(cafe.get("biz_ext", {}).get("rating", "0") or "0")
-            score += rating * 10  # 0-50分
+                if data["status"] != "1":
+                    logger.error(f"天气搜索失败: {data}")
+                    return "获取天气信息失败"
 
-            # 距离分 - 距离中心点越近越好 (0-20分)
-            cafe_lng, cafe_lat = cafe["location"].split(",")
-            distance = self._calculate_distance(
-                center_point,
-                (float(cafe_lng), float(cafe_lat))
+                # 提取预报信息
+                forecast = data["forecasts"][0]
+                city = forecast["city"]
+                report_time = forecast["reporttime"]
+                casts = forecast["casts"]
+
+                # 构建天气信息字符串
+                weather_info = f"{city}天气预报（更新于{report_time}）:\n"
+
+                for cast in casts:
+                    weather_info += (
+                        f"\n日期: {cast['date']} 星期{cast['week']}\n"
+                        f"白天天气: {cast['dayweather']}\n"
+                        f"夜间天气: {cast['nightweather']}\n"
+                        f"白天温度: {cast['daytemp']}℃\n"
+                        f"夜间温度: {cast['nighttemp']}℃\n"
+                        f"白天风向: {cast['daywind']}风\n"
+                        f"夜间风向: {cast['nightwind']}风\n"
+                        f"风力等级: {cast['daypower']}级\n"
+                    )
+
+                return weather_info
+
+
+
+    def _rank_cafes(
+            self,
+            cafes: List[Dict],
+            center_point: Tuple[float, float],
+            user_requirements: str
+    ) -> List[Dict]:
+        """提供关键信息给agent来对咖啡馆进行排序"""
+        # 提取当前城市
+        city_code = cafes
+
+        # 添加时间感知
+        current_time_str = time.ctime()
+
+        #创建subagent
+        client = OpenAI(api_key="sk-08f8c5ba147f459e95107849aba7def1", base_url="https://api.deepseek.com/v1")
+
+        # 准备系统提示词
+        system_prompt = """你是一个专业的地点推荐助手。请根据用户需求对地点进行筛选和排序。
+
+            重要考虑因素：
+            1. 距离,已经默认按照距离从近到远排序
+            2. 评分（rating字段，数值越大越好）
+            3. 用户特殊需求
+
+            请按以下规则处理：
+            - 然后按用户需求的相关性排序
+            - 最后考虑距离和评分
+
+            返回格式：保持原始JSON格式不变，仅调整顺序和筛选。
+            """
+
+        # 准备用户消息
+        user_message = f"""请根据以下需求对咖啡馆进行排序和筛选：
+        用户需求: {user_requirements}
+
+        可用的咖啡馆信息如下（按原始顺序）:
+        {json.dumps(cafes, ensure_ascii=False, indent=2)}
+        
+        当前时间：
+        {current_time_str if current_time_str else "未知（时间API不可用）"}
+        
+        请只返回一个重新排序和筛选后的JSON格式，不要返回其他内容。
+        如果用户需求不明确，请综合考虑距离、评分等因素进行排序。
+        """
+
+        try:
+            response = client.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message},
+                ],
+                stream=False,
+                temperature=0.3  # 降低随机性，使结果更稳定
             )
-            # 距离在1公里内得20分，超过2公里得0分，线性衰减
-            distance_score = max(0, 20 * (1 - (distance / 2000)))
-            score += distance_score
 
-            # 用户需求加分 (每项最多10分)
-            for priority in user_priorities:
-                if priority == "停车" and ("停车" in cafe.get("tag", "") or "免费停车" in cafe.get("business", "")):
-                    score += 10
-                elif priority == "安静" and ("环境" in cafe.get("tag", "") or "安静" in cafe.get("tag", "")):
-                    score += 10
-                elif priority == "商务" and ("商务" in cafe.get("tag", "") or "会议" in cafe.get("business", "")):
-                    score += 10
-                elif priority == "交通" and ("地铁" in cafe.get("tag", "") or "公交" in cafe.get("business", "")):
-                    score += 10
+            # 提取AI返回的内容并解析为JSON
+            ranked_cafes = json.loads(response.choices[0].message.content)
+            return ranked_cafes
 
-            # 保存分数
-            cafe["_score"] = score
-
-        # 按分数排序
-        ranked_cafes = sorted(cafes, key=lambda x: x.get("_score", 0), reverse=True)
-
-        # 返回前5个结果
-        return ranked_cafes[:5]
+        except Exception as e:
+            print(f"Error in ranking cafes: {e}")
+            # 如果出现错误，返回原始列表按距离排序的前5个结果
+            return cafes[:5]
 
     def _calculate_distance(
         self,
