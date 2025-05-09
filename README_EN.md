@@ -1,6 +1,6 @@
 ## 📖 Project Introduction
 
-**CoffeeMeet** is an innovative application based on the OpenManus intelligent agent framework, specifically designed to solve the daily challenge of "multi-person meeting location selection." In today's fast-paced urban lifestyle, finding a meeting place that is fair, comfortable, and high-quality for everyone involved has become increasingly important. CoffeeMeet uses artificial intelligence and map data analysis to intelligently recommend the best meeting cafes, making social activity planning easy and enjoyable.
+This meeting plce recommendation system is an innovative application based on the OpenManus intelligent agent framework, specifically designed to solve the daily challenge of "multi-person meeting location selection." In today's fast-paced urban lifestyle, finding a meeting place that is fair, comfortable, and high-quality for everyone involved has become increasingly important. CoffeeMeet uses artificial intelligence and map data analysis to intelligently recommend the best meeting cafes, making social activity planning easy and enjoyable.
 
 ### 💡 Core Features
 
@@ -10,19 +10,6 @@
 - **High-quality Interactive Interface**: Carefully designed web interface with responsive layout
 - **Intuitive Map Visualization**: Integrates Amap API to visually display geographical locations and route planning
 - **Smart Transportation Suggestions**: Provides arrival methods and parking suggestions to address travel concerns
-
-## 🔍 Project Showcase
-
-<p align="center">
-  <video width="80%" controls>
-    <source src="docs/videos/coffee_meet_demo.mp4" type="video/mp4">
-    Your browser does not support the video tag, please upgrade your browser or use another one
-  </video>
-</p>
-
-<p align="center">
-  <em>Project demonstration video - Smart cafe recommendation process for multiple locations</em>
-</p>
 
 ## 🚀 Quick Start
 
@@ -37,8 +24,7 @@
 1. Clone this repository:
 
 ```bash
-git clone 
-cd 
+git clone https://github.com/saltyFish-Billy/meeting-place-recommendation-system.git 
 ```
 
 2. Create and activate a virtual environment:
