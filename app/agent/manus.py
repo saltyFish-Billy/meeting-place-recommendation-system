@@ -9,6 +9,7 @@ from app.tool.bing_search import BingSearch
 # from app.tool.baidu_search import BaiduSearch
 from app.tool.browser_use_tool import BrowserUseTool
 from app.tool.cafe_recommender import CafeRecommender
+from app.tool.reality_awareness import RealityAwareness
 from app.tool.python_execute import PythonExecute
 from app.tool.str_replace_editor import StrReplaceEditor
 
@@ -43,6 +44,7 @@ class Manus(BrowserAgent):
             StrReplaceEditor(),
             CafeRecommender(),
             Terminate(),
+            RealityAwareness(),
         )
     )
 

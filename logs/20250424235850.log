@@ -1,0 +1,22 @@
+2025-04-24 23:59:09.095 | WARNING  | __main__:main:15 - Processing your request...
+2025-04-24 23:59:09.096 | DEBUG    | app.agent.base:run:141 - Executing step 1
+2025-04-24 23:59:09.097 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-24 23:59:17.897 | INFO     | app.llm:update_token_count:231 - Token usage: Input=2822, Completion=39, Cumulative Input=2822, Cumulative Completion=39, Total=2861, Cumulative Total=2861
+2025-04-24 23:59:17.898 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:59:17.898 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 2 tools to use
+2025-04-24 23:59:17.898 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['bing_search', 'bing_search']
+2025-04-24 23:59:17.900 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"query": "深圳天气"}
+2025-04-24 23:59:17.900 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-24 23:59:18.505 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Observed output of cmd `bing_search` executed:
+['https://www.zhihu.com/question/21642856', 'https://www.zhihu.com/question/515014847', 'https://www.zhihu.com/question/266858835', 'https://www.zhihu.com/question/265064592', 'https://www.zhihu.com/topic/23569219/top-answers', 'https://www.zhihu.com/question/21642856/answers/updated', 'https://www.zhihu.com/question/653582421', 'https://www.zhihu.com/question/32292004', 'https://www.zhihu.com/question/37073952', 'https://www.zhihu.com/question/307489998']
+2025-04-24 23:59:18.506 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-24 23:59:19.067 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Observed output of cmd `bing_search` executed:
+['https://www.zhihu.com/question/504047879', 'https://www.zhihu.com/question/633699804', 'https://www.zhihu.com/question/646236579', 'https://www.zhihu.com/question/596269363', 'https://www.zhihu.com/question/439519579', 'https://www.zhihu.com/question/13178399240', 'https://www.zhihu.com/question/609837611', 'https://www.zhihu.com/question/515014847', 'https://www.zhihu.com/question/52820846', 'https://www.zhihu.com/question/330310660']
+2025-04-24 23:59:19.068 | DEBUG    | app.agent.base:run:141 - Executing step 2
+2025-04-24 23:59:19.069 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-24 23:59:26.383 | INFO     | app.llm:update_token_count:231 - Token usage: Input=3365, Completion=68, Cumulative Input=6187, Cumulative Completion=107, Total=3433, Cumulative Total=6294
+2025-04-24 23:59:26.384 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:59:26.384 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 2 tools to use
+2025-04-24 23:59:26.384 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use', 'browser_use']
+2025-04-24 23:59:26.384 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "go_to_url", "url": "https://www.weather.com"}
+2025-04-24 23:59:26.385 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...

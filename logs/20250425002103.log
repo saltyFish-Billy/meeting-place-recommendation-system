@@ -1,0 +1,117 @@
+2025-04-25 00:24:27.130 | WARNING  | __main__:main:15 - Processing your request...
+2025-04-25 00:24:27.131 | DEBUG    | app.agent.base:run:141 - Executing step 1
+2025-04-25 00:24:27.132 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-25 00:24:35.499 | INFO     | app.llm:update_token_count:231 - Token usage: Input=2963, Completion=69, Cumulative Input=2963, Cumulative Completion=69, Total=3032, Cumulative Total=3032
+2025-04-25 00:24:35.499 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:24:35.499 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 3 tools to use
+2025-04-25 00:24:35.499 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['bing_search', 'bing_search', 'reality_awareness']
+2025-04-25 00:24:35.501 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"query": "深圳游玩地点推荐"}
+2025-04-25 00:24:35.502 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-25 00:24:36.123 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Cmd `bing_search` completed with no output
+2025-04-25 00:24:36.123 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-25 00:24:36.683 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Cmd `bing_search` completed with no output
+2025-04-25 00:24:36.684 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'reality_awareness'...
+2025-04-25 00:24:36.968 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'reality_awareness' completed its mission! Result: Observed output of cmd `reality_awareness` executed:
+## 已为您查询到时间和天气信息:
+
+### 当前时间: 2025-04-25 00:24:36
+### 天气信息:
+深圳市天气预报（更新于2025-04-25 00:00:25）:
+
+日期: 2025-04-25 星期5
+白天天气: 大雨-暴雨
+夜间天气: 阵雨
+白天温度: 27℃
+夜间温度: 22℃
+白天风向: 东北风
+夜间风向: 东北风
+风力等级: 1-3级
+
+日期: 2025-04-26 星期6
+白天天气: 阵雨
+夜间天气: 多云
+白天温度: 26℃
+夜间温度: 22℃
+白天风向: 北风
+夜间风向: 北风
+风力等级: 1-3级
+
+日期: 2025-04-27 星期7
+白天天气: 多云
+夜间天气: 多云
+白天温度: 27℃
+夜间温度: 23℃
+白天风向: 北风
+夜间风向: 北风
+风力等级: 1-3级
+
+日期: 2025-04-28 星期1
+白天天气: 多云
+夜间天气: 多云
+白天温度: 30℃
+夜间温度: 23℃
+白天风向: 北风
+夜间风向: 北风
+风力等级: 1-3级
+
+2025-04-25 00:24:36.970 | DEBUG    | app.agent.base:run:141 - Executing step 2
+2025-04-25 00:24:36.971 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-25 00:24:43.237 | INFO     | app.llm:update_token_count:231 - Token usage: Input=3564, Completion=54, Cumulative Input=6527, Cumulative Completion=123, Total=3618, Cumulative Total=6650
+2025-04-25 00:24:43.238 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:24:43.238 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 2 tools to use
+2025-04-25 00:24:43.238 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['bing_search', 'bing_search']
+2025-04-25 00:24:43.238 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"query": "深圳游玩地点推荐 2025"}
+2025-04-25 00:24:43.239 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-25 00:24:44.032 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Cmd `bing_search` completed with no output
+2025-04-25 00:24:44.033 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-25 00:24:44.824 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Cmd `bing_search` completed with no output
+2025-04-25 00:24:44.825 | DEBUG    | app.agent.base:run:141 - Executing step 3
+2025-04-25 00:24:44.825 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-25 00:24:53.449 | INFO     | app.llm:update_token_count:231 - Token usage: Input=3828, Completion=52, Cumulative Input=10355, Cumulative Completion=175, Total=3880, Cumulative Total=10530
+2025-04-25 00:24:53.449 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:24:53.450 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-25 00:24:53.450 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-25 00:24:53.451 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "go_to_url", "url": "https://www.tripadvisor.cn/Attractions-g297427-Activities-Shenzhen_Guangdong.html"}
+2025-04-25 00:24:53.452 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-25 00:24:57.862 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Navigated to https://www.tripadvisor.cn/Attractions-g297427-Activities-Shenzhen_Guangdong.html
+2025-04-25 00:24:57.863 | DEBUG    | app.agent.base:run:141 - Executing step 4
+2025-04-25 00:25:04.955 | INFO     | app.llm:update_token_count:231 - Token usage: Input=4174, Completion=32, Cumulative Input=14529, Cumulative Completion=207, Total=4206, Cumulative Total=14736
+2025-04-25 00:25:04.955 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:25:04.955 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-25 00:25:04.956 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-25 00:25:04.956 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "extract_content", "goal": "深圳游玩地点推荐"}
+2025-04-25 00:25:04.956 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-25 00:25:15.867 | INFO     | app.llm:update_token_count:231 - Token usage: Input=2950, Completion=136, Cumulative Input=17479, Cumulative Completion=343, Total=3086, Cumulative Total=17822
+2025-04-25 00:25:15.868 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Extracted from page:
+{
+  "title": "2025年4月三亚景点攻略-三亚旅游必去景点-三亚景点大全-猫途鹰",
+  "content": "The page provides a comprehensive list of popular tourist attractions in Sanya, Hainan, as ranked by travelers on Tripadvisor. The attractions are categorized and include details such as the number of reviews, ratings, and types of activities available. Some highlighted attractions include Atlantis Water World, Nanshan Temple, Yalong Bay, and Wuzhizhou Island. The page also offers navigation links to other travel-related sections like hotels, restaurants, and experiences."
+}
+
+2025-04-25 00:25:15.869 | DEBUG    | app.agent.base:run:141 - Executing step 5
+2025-04-25 00:25:22.129 | INFO     | app.llm:update_token_count:231 - Token usage: Input=4603, Completion=29, Cumulative Input=22082, Cumulative Completion=372, Total=4632, Cumulative Total=22454
+2025-04-25 00:25:22.130 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:25:22.130 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-25 00:25:22.131 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-25 00:25:22.131 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "scroll_down", "scroll_amount": 500}
+2025-04-25 00:25:22.131 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-25 00:25:22.136 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Scrolled down by 500 pixels
+2025-04-25 00:25:22.136 | DEBUG    | app.agent.base:run:141 - Executing step 6
+2025-04-25 00:25:30.276 | INFO     | app.llm:update_token_count:231 - Token usage: Input=4906, Completion=32, Cumulative Input=26988, Cumulative Completion=404, Total=4938, Cumulative Total=27392
+2025-04-25 00:25:30.277 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-25 00:25:30.278 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-25 00:25:30.278 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-25 00:25:30.278 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "extract_content", "goal": "深圳游玩地点推荐"}
+2025-04-25 00:25:30.279 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-25 00:25:45.272 | INFO     | app.llm:update_token_count:231 - Token usage: Input=2950, Completion=222, Cumulative Input=29938, Cumulative Completion=626, Total=3172, Cumulative Total=30564
+2025-04-25 00:25:45.273 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Extracted from page:
+{
+  "title": "2025年4月三亚景点攻略-三亚旅游必去景点-三亚景点大全-猫途鹰",
+  "content": "The page provides a comprehensive list of popular tourist attractions in Sanya, Hainan, China, as ranked by travelers on Tripadvisor. The attractions are categorized by type and include detailed information such as traveler reviews, ratings, and photos. Some of the top attractions mentioned are:\n\n1. **Atlantis Water World** - A water park with 260 reviews.\n2. **Nanshan Temple** - A cultural site with 1,095 reviews.\n3. **Yalong Bay** - A beach area with 1,652 reviews.\n4. **Sanya Zhujiang Nantian Hot Spring** - A hot spring resort with 606 reviews.\n5. **Luhuitou Park** - A scenic park with 402 reviews.\n\nThe page also includes links to other related travel resources and information about Tripadvisor's services and policies."
+}
+
+2025-04-25 00:25:45.273 | DEBUG    | app.agent.base:run:141 - Executing step 7

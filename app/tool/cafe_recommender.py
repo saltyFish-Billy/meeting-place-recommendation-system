@@ -19,12 +19,13 @@ from langchain_deepseek import ChatDeepSeek
 from openai import OpenAI
 
 class CafeRecommender(BaseTool):
-    """咖啡馆推荐工具，基于多个地点计算最佳会面位置并推荐咖啡馆"""
+    """会面地点推荐工具，基于多个地点计算最佳会面位置并推荐会面地点"""
 
     name: str = "cafe_recommender"
-    description: str = """推荐适合多人会面的咖啡馆。
-该工具基于多个地点的位置信息，计算最佳会面地点，并推荐附近的咖啡馆。
-工具会生成包含地图和推荐信息的HTML页面，提供详细的店铺信息、地理位置和交通建议。
+    description: str = """推荐适合多人会面的会面地点。
+该工具基于多个地点的位置信息，计算最佳会面地点，并推荐附近的会面地点。
+工具会生成包含地图和推荐信息的HTML页面，提供详细的店铺信息、地理位置。
+HTML页面会保存在workspace/js_src目录下，文件名格式为cafe_recommendation_时间戳_随机字符串.html。
 """
     parameters: dict = {
         "type": "object",
@@ -36,12 +37,12 @@ class CafeRecommender(BaseTool):
             },
             "keywords": {
                 "type": "string",
-                "description": "(可选) 搜索关键词，默认为'咖啡馆'",
-                "default": "咖啡馆",
+                "description": "(可选) 搜索关键词，默认为'会面地点'",
+                "default": "会面地点",
             },
             "user_requirements": {
                 "type": "string",
-                "description": "(可选) 用户的额外需求，如'停车方便'，'环境安静'等",
+                "description": "(可选) 用户的额外需求，如'离地铁站近'，'环境安静'，或者是有具体的会面时间要求，例如'明天下午3点前'等",
                 "default": "",
             },
         },
@@ -58,15 +59,15 @@ class CafeRecommender(BaseTool):
     async def execute(
         self,
         locations: List[str],
-        keywords: str = "咖啡馆",
+        keywords: str = "会面地点",
         user_requirements: str = "",
     ) -> ToolResult:
         """
-        执行咖啡馆推荐
+        执行会面地点推荐
 
         Args:
             locations: 多个地点描述的列表
-            keywords: 搜索关键词，默认为"咖啡馆"
+            keywords: 搜索关键词，默认为"会面地点"
             user_requirements: 用户的额外需求
 
         Returns:
@@ -98,7 +99,7 @@ class CafeRecommender(BaseTool):
             # 2. 计算中心点
             center_point = self._calculate_center_point(coordinates)
 
-            # 3. 搜索中心点附近的咖啡馆
+            # 3. 搜索中心点附近的会面地点
             cafes = await self._search_pois(
                 f"{center_point[0]},{center_point[1]}",
                 keywords,
@@ -108,7 +109,7 @@ class CafeRecommender(BaseTool):
             if not cafes:
                 return ToolResult(output=f"在计算的中心点附近找不到{keywords}")
 
-            # 4. 根据评分、距离等因素筛选和排序咖啡馆
+            # 4. 根据评分、距离等因素筛选和排序会面地点
             recommended_cafes = self._rank_cafes(cafes, center_point, user_requirements)
 
             # 5. 生成HTML页面
@@ -125,7 +126,7 @@ class CafeRecommender(BaseTool):
             return ToolResult(output=result_text)
 
         except Exception as e:
-            logger.error(f"咖啡馆推荐失败: {str(e)}")
+            logger.error(f"地点推荐失败: {str(e)}")
             return ToolResult(output=f"推荐失败: {str(e)}")
 
     async def _geocode(self, address: str) -> Optional[Dict[str, Any]]:
@@ -209,54 +210,6 @@ class CafeRecommender(BaseTool):
                 self.poi_cache[cache_key] = pois
                 return pois
 
-    async def _get_weather(
-            self,
-            city_code: str,
-    ) -> str:
-        url = "https://restapi.amap.com/v3/weather/weatherInfo"
-        params = {
-            "key": self.api_key,
-            "city": city_code,
-            "extensions": "all",
-            "output": "JSON"
-        }
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, params=params) as response:
-                if response.status != 200:
-                    logger.error(f"高德地图天气搜索失败: {response.status}")
-                    return "获取天气信息失败"
-
-                data = await response.json()
-
-                if data["status"] != "1":
-                    logger.error(f"天气搜索失败: {data}")
-                    return "获取天气信息失败"
-
-                # 提取预报信息
-                forecast = data["forecasts"][0]
-                city = forecast["city"]
-                report_time = forecast["reporttime"]
-                casts = forecast["casts"]
-
-                # 构建天气信息字符串
-                weather_info = f"{city}天气预报（更新于{report_time}）:\n"
-
-                for cast in casts:
-                    weather_info += (
-                        f"\n日期: {cast['date']} 星期{cast['week']}\n"
-                        f"白天天气: {cast['dayweather']}\n"
-                        f"夜间天气: {cast['nightweather']}\n"
-                        f"白天温度: {cast['daytemp']}℃\n"
-                        f"夜间温度: {cast['nighttemp']}℃\n"
-                        f"白天风向: {cast['daywind']}风\n"
-                        f"夜间风向: {cast['nightwind']}风\n"
-                        f"风力等级: {cast['daypower']}级\n"
-                    )
-
-                return weather_info
-
-
 
     def _rank_cafes(
             self,
@@ -264,7 +217,7 @@ class CafeRecommender(BaseTool):
             center_point: Tuple[float, float],
             user_requirements: str
     ) -> List[Dict]:
-        """提供关键信息给agent来对咖啡馆进行排序"""
+        """提供关键信息给agent来对会面地点进行排序"""
         # 提取当前城市
         city_code = cafes
 
@@ -283,6 +236,8 @@ class CafeRecommender(BaseTool):
             3. 用户特殊需求
 
             请按以下规则处理：
+            - 如果有会面时间请先确定会面时间，并检查会面地点的营业时间opentime_week字段是否符合
+            - 首先筛选出符合用户需求的会面地点
             - 然后按用户需求的相关性排序
             - 最后考虑距离和评分
 
@@ -290,17 +245,18 @@ class CafeRecommender(BaseTool):
             """
 
         # 准备用户消息
-        user_message = f"""请根据以下需求对咖啡馆进行排序和筛选：
+        user_message = f"""请根据以下需求对会面地点进行排序和筛选：
         用户需求: {user_requirements}
-
-        可用的咖啡馆信息如下（按原始顺序）:
-        {json.dumps(cafes, ensure_ascii=False, indent=2)}
         
         当前时间：
-        {current_time_str if current_time_str else "未知（时间API不可用）"}
+        {current_time_str}
         
-        请只返回一个重新排序和筛选后的JSON格式，不要返回其他内容。
+        可用的会面地点信息如下（按原始顺序）:
+        {json.dumps(cafes, ensure_ascii=False, indent=2)}
+        
         如果用户需求不明确，请综合考虑距离、评分等因素进行排序。
+        请只返回满足条件的会面地点，如果结果超过5个，只保留前5条。
+        请只返回一个重新排序和筛选后的和原始一样的JSON格式，不要返回其他的解释内容。
         """
 
         try:
@@ -311,9 +267,9 @@ class CafeRecommender(BaseTool):
                     {"role": "user", "content": user_message},
                 ],
                 stream=False,
-                temperature=0.3  # 降低随机性，使结果更稳定
+                temperature=0  # 降低随机性，使结果更稳定
             )
-
+            print("Raw AI response:", response.choices[0].message.content)  # 调试用
             # 提取AI返回的内容并解析为JSON
             ranked_cafes = json.loads(response.choices[0].message.content)
             return ranked_cafes
@@ -386,7 +342,7 @@ class CafeRecommender(BaseTool):
                 "icon": "location"
             })
 
-        # 生成咖啡馆标记数据
+        # 生成会面地点标记数据
         cafe_markers = []
         for cafe in cafes:
             lng, lat = cafe["location"].split(",")
@@ -417,27 +373,25 @@ class CafeRecommender(BaseTool):
             distance = self._calculate_distance(center_point, (loc['lng'], loc['lat']))/1000
             location_distance_html += f"<li><i class='bx bx-map'></i><strong>{loc['name']}</strong>: 距离中心点约 <span class='distance'>{distance:.1f} 公里</span></li>"
 
-        # 生成咖啡馆卡片HTML
+        # 生成会面地点卡片HTML
         cafe_cards_html = ""
         for cafe in cafes:
             # 提取评分
-            rating = cafe.get("biz_ext", {}).get("rating", "暂无评分")
+            rating = cafe.get("business", {}).get("rating", "暂无评分")
 
             # 提取地址
             address = cafe.get("address", "地址未知")
 
             # 提取营业时间
-            business_hours = cafe.get("business_hours", "营业时间未知")
-            if isinstance(business_hours, list) and business_hours:
-                business_hours = "; ".join(business_hours)
+            business_hours = cafe.get("business", {}).get("opentime_week","营业时间未知")
 
             # 提取电话
-            tel = cafe.get("tel", "电话未知")
+            tel = cafe.get("business", {}).get("tel", "电话未知")
 
             # 提取标签
-            tags = cafe.get("tag", [])
+            tags = cafe.get("business", {}).get("tag", [])
             if isinstance(tags, str):
-                tags = tags.split(";")
+                tags = tags.split(",")
             elif not isinstance(tags, list):
                 tags = []
 
@@ -447,7 +401,7 @@ class CafeRecommender(BaseTool):
                     tags_html += f"<span class='cafe-tag'>{tag.strip()}</span>"
 
             if not tags_html:
-                tags_html = "<span class='cafe-tag'>咖啡馆</span>"
+                tags_html = "<span class='cafe-tag'>会面地点</span>"
 
             # 计算到中心点的距离
             lng, lat = cafe["location"].split(",")
@@ -457,7 +411,7 @@ class CafeRecommender(BaseTool):
             )
             distance_text = f"{distance/1000:.1f} 公里"
 
-            # 生成咖啡馆卡片HTML
+            # 生成会面地点卡片HTML
             cafe_cards_html += f'''
             <div class="cafe-card">
                 <div class="cafe-img">
@@ -509,7 +463,7 @@ class CafeRecommender(BaseTool):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>咖啡会 - 最佳会面咖啡馆推荐</title>
+    <title>最佳会面地点推荐</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.0.9/css/boxicons.min.css">
     <style>
         :root {{
@@ -1230,9 +1184,9 @@ class CafeRecommender(BaseTool):
     <header>
         <div class="container">
             <div class="header-logo">
-                <i class='bx bxs-coffee-togo coffee-icon'></i>咖啡会
+                <i class='bx bxs-coffee-togo coffee-icon'></i>会面地点推荐
             </div>
-            <div class="header-subtitle">为您找到的最佳会面咖啡馆</div>
+            <div class="header-subtitle">为您找到的最佳会面地点</div>
         </div>
     </header>
 
@@ -1245,8 +1199,8 @@ class CafeRecommender(BaseTool):
                     <div class="summary-value">{len(locations)} 个地点</div>
                 </div>
                 <div class="summary-item">
-                    <div class="summary-label">推荐咖啡馆数</div>
-                    <div class="summary-value">{len(cafes)} 家咖啡馆</div>
+                    <div class="summary-label">推荐会面地点数</div>
+                    <div class="summary-value">{len(cafes)} 家会面地点</div>
                 </div>
                 <div class="summary-item">
                     <div class="summary-label">特殊需求</div>
@@ -1289,14 +1243,14 @@ class CafeRecommender(BaseTool):
                     </div>
                     <div class="legend-item">
                         <div class="legend-color legend-cafe"></div>
-                        <span>咖啡馆</span>
+                        <span>会面地点</span>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="card">
-            <h2 class="section-title"><i class='bx bx-coffee'></i>推荐咖啡馆</h2>
+            <h2 class="section-title"><i class='bx bx-coffee'></i>推荐会面地点</h2>
             <div class="cafe-grid">
                 {cafe_cards_html}
             </div>
@@ -1315,10 +1269,10 @@ class CafeRecommender(BaseTool):
                 <div class="transport-card">
                     <h3 class="transport-title"><i class='bx bxs-car-garage'></i>停车建议</h3>
                     <ul class="transport-list">
-                        <li><i class='bx bx-check'></i>大部分推荐的咖啡馆周边有停车场或提供停车服务</li>
+                        <li><i class='bx bx-check'></i>大部分推荐的会面地点周边有停车场或提供停车服务</li>
                         <li><i class='bx bx-check'></i>建议使用高德地图或百度地图导航到目的地</li>
                         <li><i class='bx bx-check'></i>高峰时段建议提前30分钟出发，以便寻找停车位</li>
-                        <li><i class='bx bx-check'></i>部分咖啡馆可能提供免费停车或停车优惠</li>
+                        <li><i class='bx bx-check'></i>部分会面地点可能提供免费停车或停车优惠</li>
                     </ul>
                 </div>
             </div>
@@ -1331,7 +1285,7 @@ class CafeRecommender(BaseTool):
 
     <footer class="footer">
         <div class="container">
-            <p>© 2025 咖啡会 - 智能咖啡馆推荐服务 | 数据来源：高德地图</p>
+            <p>© 2025 咖啡会 - 智能会面地点推荐服务 | 数据来源：高德地图</p>
         </div>
     </footer>
 
@@ -1369,7 +1323,7 @@ class CafeRecommender(BaseTool):
             }};
             document.body.appendChild(script);
 
-            // 添加咖啡馆卡片动画效果
+            // 添加会面地点卡片动画效果
             animateCafeCards();
         }};
 
@@ -1408,7 +1362,7 @@ class CafeRecommender(BaseTool):
                                     border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
                         </div>`;
                 }} else {{
-                    // 咖啡馆 - 红色
+                    // 会面地点 - 红色
                     markerContent = `
                         <div style="background-color: #e74c3c; width: 24px; height: 24px; border-radius: 12px;
                                     border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.3);">
@@ -1463,7 +1417,7 @@ class CafeRecommender(BaseTool):
             map.setFitView(markers);
         }}
 
-        // 咖啡馆卡片动画
+        // 会面地点卡片动画
         function animateCafeCards() {{
             const cards = document.querySelectorAll('.cafe-card');
 
@@ -1517,13 +1471,13 @@ class CafeRecommender(BaseTool):
         num_cafes = len(cafes)
 
         result = [
-            f"## 已为您找到{num_cafes}家适合会面的咖啡馆",
+            f"## 已为您找到{num_cafes}家适合会面的会面地点",
             "",
-            "### 推荐咖啡馆:",
+            "### 推荐会面地点:",
         ]
 
         for i, cafe in enumerate(cafes):
-            rating = cafe.get("biz_ext", {}).get("rating", "暂无评分")
+            rating = cafe.get("business", {}).get("rating", "暂无评分")
             address = cafe.get("address", "地址未知")
             result.append(f"{i+1}. **{cafe['name']}** (评分: {rating})")
             result.append(f"   地址: {address}")
@@ -1531,7 +1485,7 @@ class CafeRecommender(BaseTool):
 
         # 只返回文件名，不包含完整路径
         result.append(f"HTML页面: {os.path.basename(html_path)}")
-        result.append("可在浏览器中打开查看详细地图和咖啡馆信息。")
+        result.append("可在浏览器中打开查看详细地图和会面地点信息。")
 
         return "\n".join(result)
 
@@ -1558,12 +1512,12 @@ class CafeRecommender(BaseTool):
             "content": f"<p>我检测到{len(locations)}个不同的位置。正在分析它们的地理分布...</p>{location_analysis}"
         })
 
-        # 步骤2: 显示正在操作高德地图寻找最佳咖啡馆的位置
+        # 步骤2: 显示正在操作高德地图寻找最佳会面地点的位置
         search_steps.append({
             "icon": "bx-map",
             "title": "正在操作高德地图",
             "content": """
-            <p>正在操作高德地图寻找最佳咖啡馆的位置...</p>
+            <p>正在操作高德地图寻找最佳会面地点的位置...</p>
             <div class="map-operation-animation">
                 <div class="map-bg"></div>
                 <div class="map-cursor"></div>
@@ -1590,10 +1544,10 @@ class CafeRecommender(BaseTool):
             if detected_requirements:
                 requirement_analysis = f"<p>我从您的需求中检测到以下关键偏好:</p><ul>"
                 for req in detected_requirements:
-                    requirement_analysis += f"<li><strong>{req}</strong>: 将优先考虑{req}便利的咖啡馆</li>"
+                    requirement_analysis += f"<li><strong>{req}</strong>: 将优先考虑{req}便利的会面地点</li>"
                 requirement_analysis += "</ul>"
             else:
-                requirement_analysis = "<p>您没有提供特定的需求偏好，将基于综合评分和距离推荐最佳咖啡馆。</p>"
+                requirement_analysis = "<p>您没有提供特定的需求偏好，将基于综合评分和距离推荐最佳会面地点。</p>"
         else:
             requirement_analysis = "<p>未提供特殊需求，将根据评分和位置便利性进行推荐。</p>"
 
@@ -1603,9 +1557,9 @@ class CafeRecommender(BaseTool):
             "content": requirement_analysis
         })
 
-        # 步骤4: 搜索周边咖啡馆动画
+        # 步骤4: 搜索周边会面地点动画
         search_cafes_explanation = """
-        <p>我正在以最佳会面点为中心，搜索周边2公里范围内的咖啡馆...</p>
+        <p>我正在以最佳会面点为中心，搜索周边2公里范围内的会面地点...</p>
         <div class="search-animation">
             <div class="radar-circle"></div>
             <div class="radar-circle"></div>
@@ -1616,13 +1570,13 @@ class CafeRecommender(BaseTool):
 
         search_steps.append({
             "icon": "bx-search-alt",
-            "title": "搜索周边咖啡馆",
+            "title": "搜索周边会面地点",
             "content": search_cafes_explanation
         })
 
         # 步骤5: 排序和筛选
         ranking_explanation = """
-        <p>我已找到多家咖啡馆，正在根据综合评分对它们进行排名...</p>
+        <p>我已找到多家会面地点，正在根据综合评分对它们进行排名...</p>
         <div class="ranking-result">
             <div class="result-bar" style="width: 95%;">咖啡评分</div>
             <div class="result-bar" style="width: 85%;">距离便利性</div>
@@ -1633,7 +1587,7 @@ class CafeRecommender(BaseTool):
 
         search_steps.append({
             "icon": "bx-sort",
-            "title": "对咖啡馆进行排名",
+            "title": "对会面地点进行排名",
             "content": ranking_explanation
         })
 

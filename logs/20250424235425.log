@@ -1,0 +1,187 @@
+2025-04-24 23:55:11.401 | WARNING  | __main__:main:15 - Processing your request...
+2025-04-24 23:55:11.401 | DEBUG    | app.agent.base:run:141 - Executing step 1
+2025-04-24 23:55:11.402 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-24 23:55:17.353 | INFO     | app.llm:update_token_count:231 - Token usage: Input=2821, Completion=22, Cumulative Input=2821, Cumulative Completion=22, Total=2843, Cumulative Total=2843
+2025-04-24 23:55:17.354 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:55:17.354 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-24 23:55:17.354 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['bing_search']
+2025-04-24 23:55:17.354 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"query": "深圳当前时间和天气"}
+2025-04-24 23:55:17.357 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'bing_search'...
+2025-04-24 23:55:18.695 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'bing_search' completed its mission! Result: Cmd `bing_search` completed with no output
+2025-04-24 23:55:18.695 | DEBUG    | app.agent.base:run:141 - Executing step 2
+2025-04-24 23:55:18.696 | DEBUG    | app.agent.browser:get_browser_state:59 - Browser state error: Browser context not initialized
+2025-04-24 23:55:24.388 | INFO     | app.llm:update_token_count:231 - Token usage: Input=3041, Completion=31, Cumulative Input=5862, Cumulative Completion=53, Total=3072, Cumulative Total=5915
+2025-04-24 23:55:24.388 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:55:24.389 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-24 23:55:24.389 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-24 23:55:24.389 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "web_search", "query": "深圳当前时间和天气"}
+2025-04-24 23:55:24.390 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-24 23:55:27.412 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Searched for '深圳当前时间和天气' and navigated to first result: https://weather.sz.gov.cn/qixiangfuwu/yubaofuwu/index.html
+All results:https://weather.sz.gov.cn/qixiangfuwu/yubaofuwu/index.html
+https://www.weather.com.cn/weather/101280601.shtml
+https://weather.cma.cn/web/weather/59493.html
+https://weather.sz.gov.cn/mobile/qixiangfuwu/yubaofuwu/jinmingtianqiyubao/index.html
+https://www.weather.com.cn/weather15d/101280601.shtml
+http://www.nmc.cn/publish/forecast/AGD/shenzuo.html
+https://tianqi.fliggy.com/440300/
+https://weather.cma.cn/web/weather/59287.html
+https://m.weibo.cn/u/1871802012
+https://www.timeanddate.com/weather/china/shenzhen/ext
+2025-04-24 23:55:27.412 | DEBUG    | app.agent.base:run:141 - Executing step 3
+2025-04-24 23:55:52.061 | INFO     | app.llm:update_token_count:231 - Token usage: Input=3551, Completion=33, Cumulative Input=9413, Cumulative Completion=86, Total=3584, Cumulative Total=9499
+2025-04-24 23:55:52.062 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:55:52.062 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-24 23:55:52.062 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['browser_use']
+2025-04-24 23:55:52.062 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"action": "extract_content", "goal": "深圳当前时间和天气信息"}
+2025-04-24 23:55:52.063 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'browser_use'...
+2025-04-24 23:56:35.128 | INFO     | app.llm:update_token_count:231 - Token usage: Input=19952, Completion=826, Cumulative Input=29365, Cumulative Completion=912, Total=20778, Cumulative Total=30277
+2025-04-24 23:56:35.128 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'browser_use' completed its mission! Result: Observed output of cmd `browser_use` executed:
+Extracted from page:
+{
+  "current_time": "2025年04月24日 周四 23:55:51（农历三月廿七）",
+  "weather_condition": "阴天有大雨，局部暴雨，雨时伴有雷暴和8级左右短时大风",
+  "temperature_range": "23-27℃",
+  "humidity": "75-95%",
+  "rainfall": "40mm",
+  "wind_direction": "东北风",
+  "wind_speed": "3-4级",
+  "visibility": "16.9km",
+  "pressure": "1003.7hPa",
+  "daily_rainfall": "11.7mm",
+  "relative_humidity": "95%",
+  "weather_trend": "26日白天降雨减弱；展望27-30日大致多云，有短时阵雨，气温回升。",
+  "forecast": [
+    {
+      "date": "4月25日",
+      "weather": "阵雨",
+      "wind": "东北风3-4级",
+      "humidity_range": "75-95%"
+    },
+    {
+      "date": "4月26日",
+      "weather": "阵雨转多云",
+      "wind": "东风3级",
+      "humidity_range": "70-95%"
+    },
+    {
+      "date": "4月27日",
+      "weather": "多云间阴天，局部有短时阵雨",
+      "wind": "东风3级",
+      "humidity_range": "65-90%"
+    },
+    {
+      "date": "4月28日",
+      "weather": "多云，局地有短时阵雨",
+      "wind": "西南转北风2-3级",
+      "humidity_range": "65-95%"
+    },
+    {
+      "date": "4月29日",
+      "weather": "多云，局地有短时阵雨",
+      "wind": "东风3级",
+      "humidity_range": "50-90%"
+    },
+    {
+      "date": "4月30日",
+      "weather": "多云，局地有短时阵雨",
+      "wind": "东风2-3级",
+      "humidity_range": "50-90%"
+    },
+    {
+      "date": "5月1日",
+      "weather": "多云间阴天，有短时阵雨",
+      "wind": "东风2-3级",
+      "humidity_range": "60-90%"
+    },
+    {
+      "date": "5月2日",
+      "weather": "多云",
+      "wind": "东风2-3级",
+      "humidity_range": "60-90%"
+    },
+    {
+      "date": "5月3日",
+      "weather": "多云",
+      "wind": "东风2-3级",
+      "humidity_range": "60-90%"
+    },
+    {
+      "date": "5月4日",
+      "weather": "多云",
+      "wind": "东风2-3级",
+      "humidity_range": "60-90%"
+    }
+  ],
+  "environmental_forecast": [
+    {
+      "date": "今天（4月24日）",
+      "air_quality": "二级较好",
+      "haze": "无灰霾"
+    },
+    {
+      "date": "明天（4月25日）",
+      "air_quality": "二级较好",
+      "haze": "无灰霾"
+    },
+    {
+      "date": "后天（4月26日）",
+      "air_quality": "二级较好",
+      "haze": "无灰霾"
+    }
+  ],
+  "weather_indices": [
+    {
+      "index": "旅游指数",
+      "level": "4级",
+      "description": "不太适宜旅游，有降水，尽量减少外出，一定要外出旅游者，请携带雨具。"
+    },
+    {
+      "index": "舒适度指数",
+      "level": "2级",
+      "description": "有降水，气温下降，多数人感觉凉。"
+    },
+    {
+      "index": "穿衣指数",
+      "level": "2级",
+      "description": "温度较高，适宜穿着夏装：如薄型长裤，薄型短衫或T恤等。"
+    },
+    {
+      "index": "晨练指数",
+      "level": "4级",
+      "description": "阴天有雨，路面湿滑，不太适宜晨练。"
+    },
+    {
+      "index": "紫外线指数",
+      "level": "弱",
+      "description": "紫外线强度弱，不需要采取防护措施。"
+    },
+    {
+      "index": "霉变指数",
+      "level": "3级",
+      "description": "易发生霉变，食品、药品、皮毛类衣物等需选择低温或密封干燥环境存放，并采取适当防霉措施。"
+    },
+    {
+      "index": "高温热浪健康风险预警",
+      "level": "无",
+      "description": "深圳市卫生健康委员会、深圳市气象局、深圳市疾病预防控制中心联合发布"
+    },
+    {
+      "index": "流感风险预警",
+      "level": "低",
+      "description": "深圳市卫生健康委员会和深圳市气象局联合发布"
+    }
+  ]
+}
+
+2025-04-24 23:56:35.130 | DEBUG    | app.agent.base:run:141 - Executing step 4
+2025-04-24 23:56:41.145 | INFO     | app.llm:update_token_count:231 - Token usage: Input=5004, Completion=18, Cumulative Input=34369, Cumulative Completion=930, Total=5022, Cumulative Total=35299
+2025-04-24 23:56:41.146 | INFO     | app.agent.toolcall:think:86 - ✨ Manus's thoughts: 
+2025-04-24 23:56:41.146 | INFO     | app.agent.toolcall:think:87 - 🛠️ Manus selected 1 tools to use
+2025-04-24 23:56:41.146 | INFO     | app.agent.toolcall:think:91 - 🧰 Tools being prepared: ['terminate']
+2025-04-24 23:56:41.147 | INFO     | app.agent.toolcall:think:94 - 🔧 Tool arguments: {"status":"success"}
+2025-04-24 23:56:41.147 | INFO     | app.agent.toolcall:execute_tool:199 - 🔧 Activating tool: 'terminate'...
+2025-04-24 23:56:41.486 | INFO     | app.agent.toolcall:_handle_special_tool:244 - 🏁 Special tool 'terminate' has completed the task!
+2025-04-24 23:56:41.487 | INFO     | app.agent.toolcall:act:169 - 🎯 Tool 'terminate' completed its mission! Result: Observed output of cmd `terminate` executed:
+The interaction has been completed with status: success
+2025-04-24 23:56:41.487 | INFO     | __main__:main:17 - Request processing completed.
